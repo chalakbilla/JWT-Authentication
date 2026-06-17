@@ -1,0 +1,10 @@
+[
+  {
+    "id": "1781729238682",
+    "firstName": "Ankit",
+    "lastName": "Raj",
+    "email": "ankitraj01567@gmail.com",
+    "passwordHash": "$2b$10$FQnesYlRp5dz1JVAxJaGg.Kr9rVE79BDKJCh2WkRHGB7jZ.app80K",
+    "provider": "local"
+  }
+]

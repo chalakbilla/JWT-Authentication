@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphic Developer Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .mesh-bg {
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #020617);
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+        }
+        .glass-specular {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        }
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body class="mesh-bg min-h-screen flex items-center justify-center p-6 antialiased font-sans text-slate-200">
+
+    <div class="fixed w-96 h-96 bg-indigo-600/20 rounded-full blur-[120px] top-[-10%] left-[-10%] pointer-events-none"></div>
+    <div class="fixed w-[30rem] h-[30rem] bg-purple-600/20 rounded-full blur-[150px] bottom-[-20%] right-[-10%] pointer-events-none"></div>
+
+    <div class="relative w-full max-w-[420px] glass-specular backdrop-blur-2xl border border-white/20 rounded-[2rem] p-10 shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] overflow-hidden transition-transform duration-500 hover:-translate-y-1">
+
+        <div class="absolute inset-0 border-t border-l border-white/30 rounded-[2rem] pointer-events-none"></div>
+
+        <!-- =================== LOGIN VIEW =================== -->
+        <div id="loginView" class="relative z-10">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-light tracking-widest text-white mb-2">SYS<span class="font-bold text-indigo-400">AUTH</span></h1>
+                <p class="text-slate-400 text-sm tracking-wide">Secure developer environment</p>
+            </div>
+
+            <div class="flex flex-col gap-4 mb-8">
+                <!-- These are real navigations (not fetch) — clicking sends the whole
+                     browser to your Express server, which redirects to Google/GitHub -->
+                <a href="http://localhost:3000/auth/google" class="group relative w-full flex items-center justify-center gap-3 py-3.5 px-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/30 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] transition-all duration-300 overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                    <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
+                    <span class="font-medium text-white tracking-wide text-sm">Continue with Google</span>
+                </a>
+
+                <a href="http://localhost:3000/auth/github" class="group relative w-full flex items-center justify-center gap-3 py-3.5 px-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/30 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] transition-all duration-300 overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                    <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <span class="font-medium text-white tracking-wide text-sm">Continue with GitHub</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-4 mb-8">
+                <div class="h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent flex-1"></div>
+                <span class="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">Manual Entry</span>
+                <div class="h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent flex-1"></div>
+            </div>
+
+            <form id="loginForm" class="space-y-5">
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase pl-1">Email</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i data-lucide="user" class="w-4 h-4 text-white/30 group-focus-within:text-indigo-400 transition-colors"></i>
+                        </div>
+                        <input type="email" id="login-email" required
+                            class="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-white placeholder-white/20 text-sm focus:outline-none focus:border-indigo-400/50 focus:ring-1 focus:ring-indigo-400/50 focus:bg-black/30 transition-all duration-300 backdrop-blur-sm"
+                            placeholder="you@example.com">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase pl-1">Password</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i data-lucide="lock" class="w-4 h-4 text-white/30 group-focus-within:text-indigo-400 transition-colors"></i>
+                        </div>
+                        <input type="password" id="login-password" required
+                            class="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-white placeholder-white/20 text-sm focus:outline-none focus:border-indigo-400/50 focus:ring-1 focus:ring-indigo-400/50 focus:bg-black/30 transition-all duration-300 backdrop-blur-sm"
+                            placeholder="••••••••••••">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 pl-1 pt-2">
+                    <div class="relative flex items-center justify-center">
+                        <input type="checkbox" id="login-remember"
+                            class="peer appearance-none w-4 h-4 border border-white/20 rounded bg-black/20 checked:bg-indigo-500/50 checked:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-400/50 transition-all cursor-pointer backdrop-blur-sm">
+                        <i data-lucide="check" class="absolute w-3 h-3 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity duration-200"></i>
+                    </div>
+                    <label for="login-remember" class="text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase cursor-pointer select-none hover:text-white/80 transition-colors">
+                        Remember Me
+                    </label>
+                </div>
+
+                <p id="login-error" class="text-red-400 text-xs text-center pt-1 hidden"></p>
+
+                <button type="submit" id="loginBtn"
+                    class="w-full relative py-3.5 px-4 bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 rounded-xl text-white font-medium text-sm tracking-wide shadow-[0_0_15px_rgba(99,102,241,0.15)] hover:shadow-[0_0_25px_rgba(99,102,241,0.3)] transition-all duration-300 mt-6 overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span class="relative z-10 flex items-center justify-center gap-2">
+                        <span id="loginBtnText">Initialize Connection</span> <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </button>
+            </form>
+
+            <p class="text-center text-xs text-white/40 mt-6">
+                Don't have an account?
+                <a href="#" id="toSignupLink" class="text-indigo-400 hover:text-indigo-300 font-medium">Sign up</a>
+            </p>
+        </div>
+
+        <!-- =================== SIGNUP VIEW =================== -->
+        <div id="signupView" class="relative z-10 hidden">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-light tracking-widest text-white mb-2">CREATE <span class="font-bold text-indigo-400">ACCOUNT</span></h1>
+                <p class="text-slate-400 text-sm tracking-wide">Join the developer environment</p>
+            </div>
+
+            <form id="signupForm" class="space-y-5">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase pl-1">First Name</label>
+                        <input type="text" id="signup-firstName" required
+                            class="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder-white/20 text-sm focus:outline-none focus:border-indigo-400/50 focus:ring-1 focus:ring-indigo-400/50 focus:bg-black/30 transition-all duration-300 backdrop-blur-sm"
+                            placeholder="Ada">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase pl-1">Last Name</label>
+                        <input type="text" id="signup-lastName" required
+                            class="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder-white/20 text-sm focus:outline-none focus:border-indigo-400/50 focus:ring-1 focus:ring-indigo-400/50 focus:bg-black/30 transition-all duration-300 backdrop-blur-sm"
+                            placeholder="Lovelace">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase pl-1">Email</label>
+                    <input type="email" id="signup-email" required
+                        class="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder-white/20 text-sm focus:outline-none focus:border-indigo-400/50 focus:ring-1 focus:ring-indigo-400/50 focus:bg-black/30 transition-all duration-300 backdrop-blur-sm"
+                        placeholder="you@example.com">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase pl-1">Password</label>
+                    <input type="password" id="signup-password" required
+                        class="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder-white/20 text-sm focus:outline-none focus:border-indigo-400/50 focus:ring-1 focus:ring-indigo-400/50 focus:bg-black/30 transition-all duration-300 backdrop-blur-sm"
+                        placeholder="••••••••••••">
+                </div>
+
+                <div class="flex items-center gap-3 pl-1 pt-2">
+                    <div class="relative flex items-center justify-center">
+                        <input type="checkbox" id="signup-remember"
+                            class="peer appearance-none w-4 h-4 border border-white/20 rounded bg-black/20 checked:bg-indigo-500/50 checked:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-400/50 transition-all cursor-pointer backdrop-blur-sm">
+                        <i data-lucide="check" class="absolute w-3 h-3 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity duration-200"></i>
+                    </div>
+                    <label for="signup-remember" class="text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase cursor-pointer select-none hover:text-white/80 transition-colors">
+                        Remember Me
+                    </label>
+                </div>
+
+                <p id="signup-error" class="text-red-400 text-xs text-center pt-1 hidden"></p>
+
+                <button type="submit" id="signupBtn"
+                    class="w-full relative py-3.5 px-4 bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 rounded-xl text-white font-medium text-sm tracking-wide shadow-[0_0_15px_rgba(99,102,241,0.15)] hover:shadow-[0_0_25px_rgba(99,102,241,0.3)] transition-all duration-300 mt-6 overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span class="relative z-10 flex items-center justify-center gap-2">
+                        <span id="signupBtnText">Create Account</span> <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </button>
+            </form>
+
+            <p class="text-center text-xs text-white/40 mt-6">
+                Already have an account?
+                <a href="#" id="toLoginLink" class="text-indigo-400 hover:text-indigo-300 font-medium">Log in</a>
+            </p>
+        </div>
+
+        <!-- =================== WELCOME VIEW =================== -->
+        <div id="welcomeView" class="relative z-10 hidden text-center">
+            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-indigo-500/20 border border-indigo-400/40 flex items-center justify-center">
+                <i data-lucide="user-check" class="w-7 h-7 text-indigo-300"></i>
+            </div>
+            <h1 class="text-2xl font-light text-white mb-2">Welcome, <span id="welcomeName" class="font-bold text-indigo-400"></span></h1>
+            <p class="text-slate-400 text-sm mb-10" id="welcomeEmail"></p>
+            <button id="logoutBtn"
+                class="w-full py-3.5 px-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 rounded-xl text-white font-medium text-sm tracking-wide transition-all duration-300">
+                Log Out
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <script>
+        const API_BASE_URL = "http://localhost:3000";
+
+        const views = {
+            login: document.getElementById('loginView'),
+            signup: document.getElementById('signupView'),
+            welcome: document.getElementById('welcomeView')
+        };
+
+        function showView(name) {
+            Object.entries(views).forEach(([key, el]) => {
+                el.classList.toggle('hidden', key !== name);
+            });
+        }
+
+        function showWelcome(user) {
+            document.getElementById('welcomeName').textContent = user.firstName || 'there';
+            document.getElementById('welcomeEmail').textContent = user.email || '';
+            showView('welcome');
+        }
+
+        // -----------------------------------------------------------
+        // Check whether the browser already holds a valid session
+        // (covers: page refresh, and landing back here after OAuth)
+        // -----------------------------------------------------------
+        async function checkSession() {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/me`, { credentials: 'include' });
+                if (res.ok) {
+                    showWelcome(await res.json());
+                    return;
+                }
+            } catch (err) {
+                // server not reachable yet — fall through to login view
+            }
+            showView('login');
+        }
+
+        // If an OAuth attempt failed, the server redirects back with ?error=...
+        const urlError = new URLSearchParams(window.location.search).get('error');
+        if (urlError) {
+            const loginError = document.getElementById('login-error');
+            loginError.textContent = "Sign-in failed (" + urlError + "). Please try again.";
+            loginError.classList.remove('hidden');
+            // clean the URL so a refresh doesn't keep showing the old error
+            window.history.replaceState({}, '', window.location.pathname);
+        }
+
+        checkSession();
+
+        // -----------------------------------------------------------
+        // View switching links
+        // -----------------------------------------------------------
+        document.getElementById('toSignupLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('signup');
+        });
+        document.getElementById('toLoginLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('login');
+        });
+
+        // -----------------------------------------------------------
+        // Login form
+        // -----------------------------------------------------------
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('login-error');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginBtnText = document.getElementById('loginBtnText');
+
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            loginError.classList.add('hidden');
+            loginBtn.disabled = true;
+            loginBtnText.textContent = "Connecting...";
+
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const remember = document.getElementById('login-remember').checked;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ email, password, remember })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    loginError.textContent = data.error || "Login failed. Please try again.";
+                    loginError.classList.remove('hidden');
+                    return;
+                }
+                showWelcome(data);
+            } catch (err) {
+                loginError.textContent = "Could not reach the server. Is it running?";
+                loginError.classList.remove('hidden');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtnText.textContent = "Initialize Connection";
+            }
+        });
+
+        // -----------------------------------------------------------
+        // Signup form
+        // -----------------------------------------------------------
+        const signupForm = document.getElementById('signupForm');
+        const signupError = document.getElementById('signup-error');
+        const signupBtn = document.getElementById('signupBtn');
+        const signupBtnText = document.getElementById('signupBtnText');
+
+        signupForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            signupError.classList.add('hidden');
+            signupBtn.disabled = true;
+            signupBtnText.textContent = "Creating...";
+
+            const firstName = document.getElementById('signup-firstName').value.trim();
+            const lastName = document.getElementById('signup-lastName').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const password = document.getElementById('signup-password').value;
+            const remember = document.getElementById('signup-remember').checked;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ firstName, lastName, email, password, remember })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    signupError.textContent = data.error || "Could not create account.";
+                    signupError.classList.remove('hidden');
+                    return;
+                }
+                showWelcome(data);
+            } catch (err) {
+                signupError.textContent = "Could not reach the server. Is it running?";
+                signupError.classList.remove('hidden');
+            } finally {
+                signupBtn.disabled = false;
+                signupBtnText.textContent = "Create Account";
+            }
+        });
+
+        // -----------------------------------------------------------
+        // Logout
+        // -----------------------------------------------------------
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await fetch(`${API_BASE_URL}/api/logout`, { method: 'POST', credentials: 'include' });
+            } catch (err) {
+                // even if this fails, still drop the user back to the login view
+            }
+            loginForm.reset();
+            showView('login');
+        });
+    </script>
+</body>
+</html>
