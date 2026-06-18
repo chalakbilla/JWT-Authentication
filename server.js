@@ -13,9 +13,14 @@ const port = 3000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: true, // reflects whatever Origin sent the request — effectively "allow all" while still letting cookies work
+  origin: true,
   credentials: true
 }));
+
+// Serve index.html and any other static assets from the public/ folder.
+// This ensures the frontend and API share the same origin (localhost:3000),
+// which is what makes httpOnly cookies work without any SameSite hacks.
+app.use(express.static(path.join(__dirname, 'public')));
 
 // =================================================================
 // SECTION 1: JSON FILE AS A SIMPLE "DATABASE"
