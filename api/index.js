@@ -1,48 +1,38 @@
-require('dotenv').config();
+// dotenv not needed on Vercel — set env vars in the Vercel dashboard
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const fs = require('fs');
-const path = require('path');
 
 const app = express();
-const port = 3000;
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: true,
+  origin: 'https://jwt-concept.vercel.app',
   credentials: true
 }));
 
-// Serve index.html and any other static assets from the public/ folder.
-// This ensures the frontend and API share the same origin (localhost:3000),
-// which is what makes httpOnly cookies work without any SameSite hacks.
-app.use(express.static(path.join(__dirname, 'public')));
-
 // =================================================================
-// SECTION 1: JSON FILE AS A SIMPLE "DATABASE"
-// Each user record looks like:
-// { id, firstName, lastName, email, passwordHash, provider }
-// passwordHash is null for accounts created via Google/GitHub —
-// those users never set a password on your site.
+// SECTION 1: IN-MEMORY "DATABASE"
+// NOTE: Vercel serverless functions have no persistent filesystem.
+// Users reset on every cold start. For production, replace this
+// with a real database (e.g. Supabase, PlanetScale, MongoDB Atlas).
+// Each user record: { id, firstName, lastName, email, passwordHash, provider }
 // =================================================================
-const USERS_FILE = path.join(__dirname, 'users.json');
+let usersStore = [];
 
 function readUsers() {
-  if (!fs.existsSync(USERS_FILE)) return [];
-  const raw = fs.readFileSync(USERS_FILE, 'utf-8');
-  return raw ? JSON.parse(raw) : [];
+  return usersStore;
 }
 
 function writeUsers(users) {
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+  usersStore = users;
 }
 
 function findUserByEmail(email) {
-  return readUsers().find(u => u.email === email);
+  return usersStore.find(u => u.email === email);
 }
 
 // =================================================================
@@ -65,8 +55,8 @@ function issueSession(user, remember, res, redirectTo) {
   const accessToken = generateAccessToken(user.email);
   res.cookie('access_token', accessToken, {
     httpOnly: true,
-    secure: false, // set true once you're serving over HTTPS
-    sameSite: 'lax',
+    secure: true,
+    sameSite: 'none',
     maxAge: 20 * 60 * 1000 // 20 minutes
   });
 
@@ -75,8 +65,8 @@ function issueSession(user, remember, res, redirectTo) {
     validRefreshTokens.add(refreshToken);
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     });
   }
@@ -304,7 +294,7 @@ app.post('/api/refresh', (req, res) => {
     }
     const newAccessToken = generateAccessToken(payload.sub);
     res.cookie('access_token', newAccessToken, {
-      httpOnly: true, secure: false, sameSite: 'lax', maxAge: 20 * 60 * 1000
+      httpOnly: true, secure: true, sameSite: 'none', maxAge: 20 * 60 * 1000
     });
     res.json({ message: 'Access token refreshed' });
   });
@@ -318,6 +308,5 @@ app.post('/api/logout', (req, res) => {
   res.json({ message: 'Logged out' });
 });
 
-app.listen(port, () => {
-  console.log(`Authentication app listening on port ${port}`);
-});
+// Export for Vercel serverless — do not call app.listen()
+module.exports = app;
